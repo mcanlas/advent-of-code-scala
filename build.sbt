@@ -3,4 +3,5 @@ lazy val `advent-of-code-2020-scala` =
     .in(file("."))
     .withCats
     .withEffectMonad
+    .withFileIO
     .withTesting
