@@ -6,7 +6,7 @@ import cats.syntax.all._
 object Runner extends Runner[IO] with IOApp {
   val dispatch: Map[String, Solver] =
     Map(
-      "1a" -> Day1a,
+      "1a" -> Day1a
     )
 }
 

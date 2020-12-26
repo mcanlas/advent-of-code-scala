@@ -12,10 +12,8 @@ trait FileReaderAlg[F[_]] {
 class BetterFilesReader[F[_]](implicit F: Sync[F]) extends FileReaderAlg[F] {
   def lines(path: String): F[NonEmptyList[String]] =
     F.delay {
-      File(path)
-        .lines
-    }
-      .map(_.toList)
+      File(path).lines
+    }.map(_.toList)
       .map(NonEmptyList.fromList[String])
       .flatMap {
         case Some(xs) =>
