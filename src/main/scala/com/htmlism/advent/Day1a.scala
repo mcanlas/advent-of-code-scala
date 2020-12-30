@@ -31,7 +31,7 @@ object Day1a extends Solver {
         }
     }
 
-  private def foldTail(base: Int, xs: List[Int]): Option[Int] =
+  def foldTail(base: Int, xs: List[Int]): Option[Int] =
     xs
       .foldLeft(Option.empty[Int]) { (acc, e) =>
         acc match {
