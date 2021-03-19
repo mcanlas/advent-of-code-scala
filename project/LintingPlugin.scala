@@ -6,13 +6,15 @@ object LintingPlugin extends AutoPlugin {
   override def trigger = allRequirements
 
   override val globalSettings =
-    addCommandAlias("fmt", "scalafmtAll") ++
+    addCommandAlias("fmt", "; scalafmtSbt; scalafmtAll") ++
       addCommandAlias("fix", "scalafixAll")
 
   override val projectSettings =
-    Seq(
-      ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.4.0",
-      semanticdbEnabled := true,
-      semanticdbVersion := scalafixSemanticdb.revision
+    inThisBuild(
+      Seq(
+        scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0",
+        semanticdbEnabled := true,
+        semanticdbVersion := scalafixSemanticdb.revision
+      )
     )
 }
