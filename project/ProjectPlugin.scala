@@ -27,7 +27,7 @@ object ProjectPlugin extends AutoPlugin {
         p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.4.1")
 
       def withEffectMonad: Project =
-        p.settings(libraryDependencies += "org.typelevel" %% "cats-effect" % "3.0.0-RC1")
+        p.settings(libraryDependencies += "org.typelevel" %% "cats-effect" % "3.0.0-RC3")
 
       def withFileIO: Project =
         p.settings(libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1")
