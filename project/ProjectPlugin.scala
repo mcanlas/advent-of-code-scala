@@ -33,7 +33,7 @@ object ProjectPlugin extends AutoPlugin {
         p.settings(libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1")
 
       def withTesting: Project =
-        p.settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.7" % "test")
+        p.settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.8" % "test")
     }
   }
 }
