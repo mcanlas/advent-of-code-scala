@@ -5,18 +5,13 @@ lazy val `advent-of-code-2020-scala` =
     .withEffectMonad
     .withFileIO
     .withTesting
-    .aggregate(`year-2020`, `year-2021`)
+    .aggregate(`year-2020`, `year-2021`, `year-2021-scala3`)
 
 lazy val `year-2020` =
-  project
-    .withCats
-    .withEffectMonad
-    .withFileIO
-    .withTesting
+  project.withCats.withEffectMonad.withFileIO.withTesting
 
 lazy val `year-2021` =
-  project
-    .withCats
-    .withEffectMonad
-    .withFileIO
-    .withTesting
+  project.withCats.withEffectMonad.withFileIO.withTesting
+
+lazy val `year-2021-scala3` =
+  project.withScala3.withCats.withEffectMonad.withFileIOScala3.withTesting

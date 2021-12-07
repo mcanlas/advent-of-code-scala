@@ -23,6 +23,9 @@ object ProjectPlugin extends AutoPlugin {
   object ThingsToAutoImport {
 
     implicit class ProjectOps(p: Project) {
+      def withScala3: Project =
+        p.settings(scalaVersion := "3.1.0")
+
       def withCats: Project =
         p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.6.1")
 
@@ -31,6 +34,14 @@ object ProjectPlugin extends AutoPlugin {
 
       def withFileIO: Project =
         p.settings(libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1")
+
+      def withFileIOScala3: Project =
+        p
+          .settings(
+            libraryDependencies +=
+              ("com.github.pathikrit" %% "better-files" % "3.9.1")
+                .cross(CrossVersion.for3Use2_13)
+          )
 
       def withTesting: Project =
         p.settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test")

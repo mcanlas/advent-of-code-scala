@@ -12,10 +12,10 @@ object Problem2 extends SolverWithFileInput {
       .sliding(3)
       .toList
       .map(_.sum)
-      .foldLeft(0 -> Option.empty[Int]){ (accPrev, newX) =>
+      .foldLeft(0 -> Option.empty[Int]) { (accPrev, newX) =>
         accPrev._2 match {
           case Some(oldX) if newX > oldX =>
-              accPrev._1 + 1 -> newX.some
+            accPrev._1 + 1 -> newX.some
 
           case _ =>
             accPrev._1 -> newX.some
