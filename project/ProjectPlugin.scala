@@ -44,7 +44,7 @@ object ProjectPlugin extends AutoPlugin {
           )
 
       def withTesting: Project =
-        p.settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.11" % "test")
+        p.settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12" % "test")
     }
   }
 }
