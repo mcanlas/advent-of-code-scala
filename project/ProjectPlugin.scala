@@ -17,14 +17,14 @@ object ProjectPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = AllRequirements
 
   override val buildSettings: Seq[Setting[String]] = Seq(
-    scalaVersion := "2.13.8"
+    scalaVersion := "2.13.10"
   )
 
   object ThingsToAutoImport {
 
     implicit class ProjectOps(p: Project) {
       def withScala3: Project =
-        p.settings(scalaVersion := "3.1.0")
+        p.settings(scalaVersion := "3.2.1")
 
       def withCats: Project =
         p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0")
