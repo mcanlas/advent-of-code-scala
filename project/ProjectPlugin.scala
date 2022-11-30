@@ -17,7 +17,7 @@ object ProjectPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = AllRequirements
 
   override val buildSettings: Seq[Setting[String]] = Seq(
-    scalaVersion := "2.13.10"
+    scalaVersion := "2.13.8"
   )
 
   object ThingsToAutoImport {
@@ -30,7 +30,7 @@ object ProjectPlugin extends AutoPlugin {
         p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0")
 
       def withEffectMonad: Project =
-        p.settings(libraryDependencies += "org.typelevel" %% "cats-effect" % "3.4.1")
+        p.settings(libraryDependencies += "org.typelevel" %% "cats-effect" % "3.4.2")
 
       def withFileIO: Project =
         p.settings(libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1")
