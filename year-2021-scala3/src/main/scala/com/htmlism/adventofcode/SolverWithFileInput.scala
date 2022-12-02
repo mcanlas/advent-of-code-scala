@@ -14,7 +14,7 @@ trait SolverWithFileInput extends IOApp {
       xs <- reader.lines(args.head)
 
       _ <- IO {
-        println(solve(xs))
-      }
+             println(solve(xs))
+           }
     } yield ExitCode.Success
 }

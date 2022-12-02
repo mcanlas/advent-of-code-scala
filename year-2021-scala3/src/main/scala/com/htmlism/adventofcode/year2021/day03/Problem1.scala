@@ -12,15 +12,15 @@ object Problem1 extends SolverWithFileInput {
 
         bits
           .map {
-            case 0 =>
+            case "0" =>
               BitBucket(1, 0)
 
-            case 1 =>
+            case "1" =>
               BitBucket(0, 1)
 
             case _ =>
               throw new IllegalArgumentException("unexpected bit value")
-          } : Array[BitBucket]
+          }: Array[BitBucket]
       }
       .reduceLeft { (xs, ys) =>
         xs
