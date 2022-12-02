@@ -1,6 +1,8 @@
 package com.htmlism.adventofcode
 package year2021.day02
 
+import scala.util.chaining._
+
 import cats.data.NonEmptyList
 
 object Problem1:
@@ -23,5 +25,5 @@ object Problem1:
           case "up" =>
             acc.copy(depth = acc.depth - e._2)
       }
-      .andThen(x => x.horizontal * x.depth)
+      .pipe(x => x.horizontal * x.depth)
       .toString
