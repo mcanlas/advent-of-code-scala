@@ -16,35 +16,14 @@ object ProjectPlugin extends AutoPlugin {
     */
   override def trigger: PluginTrigger = AllRequirements
 
-  override val buildSettings: Seq[Setting[String]] = Seq(
-    scalaVersion := "2.13.10"
-  )
-
   object ThingsToAutoImport {
 
     implicit class ProjectOps(p: Project) {
-      def withScala3: Project =
-        p.settings(scalaVersion := "3.2.1")
-
       def withCats: Project =
         p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0")
 
-      def withEffectMonad: Project =
-        p.settings(libraryDependencies += "org.typelevel" %% "cats-effect" % "3.4.2")
-
       def withFileIO: Project =
-        p.settings(libraryDependencies += "com.github.pathikrit" %% "better-files" % "3.9.1")
-
-      def withFileIOScala3: Project =
-        p
-          .settings(
-            libraryDependencies +=
-              ("com.github.pathikrit" %% "better-files" % "3.9.1")
-                .cross(CrossVersion.for3Use2_13)
-          )
-
-      def withTesting: Project =
-        p.settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14" % "test")
+        p.settings(libraryDependencies += "com.htmlism" %% "rufio-zio" % "67-53e4128d")
     }
   }
 }

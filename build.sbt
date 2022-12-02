@@ -2,9 +2,7 @@ lazy val `advent-of-code-scala` =
   project
     .in(file("."))
     .withCats
-    .withEffectMonad
     .withFileIO
-    .withTesting
     .aggregate(
       `year-2020`,
       `year-2021`,
@@ -13,13 +11,26 @@ lazy val `advent-of-code-scala` =
     )
 
 lazy val `year-2020` =
-  project.withCats.withEffectMonad.withFileIO.withTesting
+  project
+    .withCats
+    .withFileIO
 
 lazy val `year-2021` =
-  project.withCats.withEffectMonad.withFileIO.withTesting
+  project
+    .withCats
+    .withFileIO
 
 lazy val `year-2021-scala3` =
-  project.withScala3.withCats.withEffectMonad.withFileIOScala3.withTesting
+  project.withCats
 
 lazy val `year-2022` =
-  project
+  project.withFileIO
+
+ThisBuild / credentials += Credentials(
+  "GitHub Package Registry",
+  "maven.pkg.github.com",
+  "mcanlas",
+  sys.env("GH_PACKAGES_TOKEN")
+)
+
+ThisBuild / resolvers += "mcanlas/rufio" at "https://maven.pkg.github.com/mcanlas/rufio/"

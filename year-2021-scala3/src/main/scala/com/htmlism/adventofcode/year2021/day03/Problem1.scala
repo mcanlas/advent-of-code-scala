@@ -3,7 +3,7 @@ package year2021.day03
 
 import cats.data.NonEmptyList
 
-object Problem1 extends SolverWithFileInput {
+object Problem1:
   def solve(xs: NonEmptyList[String]): String =
     xs
       .map { binaryStr =>
@@ -30,4 +30,3 @@ object Problem1 extends SolverWithFileInput {
           }
       }
       .toString
-}
