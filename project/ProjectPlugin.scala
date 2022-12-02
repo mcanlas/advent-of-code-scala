@@ -23,7 +23,7 @@ object ProjectPlugin extends AutoPlugin {
         p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0")
 
       def withFileIO: Project =
-        p.settings(libraryDependencies += "com.htmlism" %% "rufio-zio" % "67-53e4128d")
+        p.settings(libraryDependencies += "com.htmlism" %% "rufio-zio" % "72-35c7b930")
     }
   }
 }
