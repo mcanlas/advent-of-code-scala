@@ -17,7 +17,7 @@ object GitHubActionsSettings extends AutoPlugin {
 
   override val buildSettings: Seq[Setting[_]] = Seq(
     githubWorkflowBuild                 := Seq(WorkflowStep.Sbt(List("scalafmtCheck", "test"))),
-    githubWorkflowEnv                   := Map.empty,
+    githubWorkflowEnv                   := Map("GH_PACKAGES_TOKEN" -> "${{ secrets.GH_PACKAGES_TOKEN }}"),
     githubWorkflowPublishTargetBranches := Nil,
     githubWorkflowIncludeClean          := false
   )
