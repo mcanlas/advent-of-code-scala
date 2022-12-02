@@ -5,7 +5,7 @@ import cats.data.NonEmptyList
 import cats.syntax.all._
 
 object Problem2 extends SolverWithFileInput {
-  override def solve(xs: NonEmptyList[String]): String =
+  def solve(xs: NonEmptyList[String]): String =
     xs
       .map(_.toInt)
       .toList
