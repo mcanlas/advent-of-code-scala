@@ -6,7 +6,8 @@ import zio.*
 object Runner extends ZIOAppDefault:
   val dispatch: Map[String, List[String] => String] =
     Map(
-      "day1" -> Day01.apply
+      "day1" -> Day01.apply,
+      "day2" -> Day02.apply
     )
 
   def run: ZIO[ZIOAppArgs, Throwable, Unit] =
