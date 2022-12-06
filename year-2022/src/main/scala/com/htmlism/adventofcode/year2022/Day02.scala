@@ -14,20 +14,8 @@ object Day02:
         val them =
           parse(xs(0))
 
-        val meStrategy =
-          part match
-            case Part.One =>
-              Map(
-                "X" -> Rps.Rock,
-                "Y" -> Rps.Paper,
-                "Z" -> Rps.Scissors
-              )
-
-            case Part.Two =>
-              Map()
-
         val me =
-          meStrategy(xs(1))
+          selectStrategy(them, part)(xs(1))
 
         val fightScore =
           rpsCycle
@@ -45,6 +33,18 @@ object Day02:
       }
       .sumAll
       .toString
+
+  def selectStrategy(them: Rps, part: Part): String => Rps =
+    part match
+      case Part.One =>
+        Map(
+          "X" -> Rps.Rock,
+          "Y" -> Rps.Paper,
+          "Z" -> Rps.Scissors
+        )
+
+      case Part.Two =>
+        Map()
 
   enum Rps:
     case Rock
