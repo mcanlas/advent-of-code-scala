@@ -44,7 +44,11 @@ object Day02:
         )
 
       case Part.Two =>
-        Map()
+        Map(
+          "X" -> rpsCycle.getLoser(them),
+          "Y" -> them,
+          "Z" -> rpsCycle.getWinner(them)
+        )
 
   enum Rps:
     case Rock
@@ -92,3 +96,21 @@ object Day02:
         1
       else
         Order[Int].compare(xn, yn)
+
+    def getWinner(x: A): A =
+      val xn =
+        lookup(x)
+
+      if (xn == (xs.size - 1))
+        xs.head
+      else
+        xs(xn + 1)
+
+    def getLoser(x: A): A =
+      val xn =
+        lookup(x)
+
+      if (xn == 0)
+        xs.last
+      else
+        xs(xn - 1)
