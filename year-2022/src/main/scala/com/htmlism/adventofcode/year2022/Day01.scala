@@ -13,6 +13,7 @@ object Day01:
       .map(_.sumAll)
       .sorted(Order.reverse(Order[Int]))
       .take(take)
+      .sumAll
       .toString
 
   private def accCmd(cmd: String) =
