@@ -11,7 +11,19 @@ object Day02:
         val Array(them, me) =
           str.split(" ").map(parse)
 
-        fight(them, me) + shapeScore(me)
+        val fightScore =
+          rpsCycle
+            .compare(me, them) match
+            case n if n > 0 =>
+              6
+            case n if n < 0 =>
+              0
+            case _          =>
+              3
+
+        println(s"$me $them $fightScore")
+
+        fightScore + shapeScore(me)
       }
       .sumAll
       .toString
@@ -20,6 +32,15 @@ object Day02:
     case Rock
     case Paper
     case Scissors
+
+  val rpsCycle =
+    Cycle(
+      List(
+        Rps.Rock,
+        Rps.Paper,
+        Rps.Scissors
+      )
+    )
 
   val parse =
     Map(
@@ -37,15 +58,22 @@ object Day02:
       case Rps.Paper    => 2
       case Rps.Scissors => 3
 
-  def fight(them: Rps, me: Rps): Int =
-    (them, me) match
-      case (Rps.Rock, Rps.Paper)    => 6
-      case (Rps.Rock, Rps.Scissors) => 0
+  case class Cycle[A](xs: List[A]):
+    private val lookup =
+      xs
+        .zipWithIndex
+        .toMap
 
-      case (Rps.Paper, Rps.Rock)     => 0
-      case (Rps.Paper, Rps.Scissors) => 6
+    def compare(x: A, y: A): Int =
+      val xn =
+        lookup(x)
 
-      case (Rps.Scissors, Rps.Rock)  => 6
-      case (Rps.Scissors, Rps.Paper) => 0
+      val yn =
+        lookup(y)
 
-      case _ => 3
+      if (xn == (xs.size - 1) && yn == 0)
+        -1
+      else if (xn == 0 && yn == (xs.size - 1))
+        1
+      else
+        Order[Int].compare(xn, yn)
