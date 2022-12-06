@@ -1,13 +1,15 @@
 package com.htmlism.adventofcode.year2022
 
-import com.htmlism.rufio.withzio.*
 import zio.*
+
+import com.htmlism.rufio.withzio.*
 
 object Runner extends ZIOAppDefault:
   val dispatch: Map[String, List[String] => String] =
     Map(
-      "day1" -> Day01.apply,
-      "day2" -> Day02.apply
+      "day1"       -> Day01(take = 1).apply,
+      "day1.part2" -> Day01(take = 3).apply,
+      "day2"       -> Day02.apply
     )
 
   def run: ZIO[ZIOAppArgs, Throwable, Unit] =

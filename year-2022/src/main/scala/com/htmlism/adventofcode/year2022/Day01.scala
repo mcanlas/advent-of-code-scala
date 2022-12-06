@@ -5,13 +5,14 @@ import cats.data.*
 import cats.syntax.all.*
 
 object Day01:
-  def apply(xs: List[String]): String =
+  def apply(take: Int)(xs: List[String]): String =
     xs
       .traverse(accCmd)
       .runS(NonEmptyList.one(Nil))
       .value
       .map(_.sumAll)
-      .maximum
+      .sorted(Order.reverse(Order[Int]))
+      .take(take)
       .toString
 
   private def accCmd(cmd: String) =
