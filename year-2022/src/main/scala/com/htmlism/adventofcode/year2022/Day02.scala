@@ -17,10 +17,14 @@ object Day02:
         val meStrategy =
           part match
             case Part.One =>
-              parse
+              Map(
+                "X" -> Rps.Rock,
+                "Y" -> Rps.Paper,
+                "Z" -> Rps.Scissors
+              )
 
             case Part.Two =>
-              parse
+              Map()
 
         val me =
           meStrategy(xs(1))
@@ -60,10 +64,7 @@ object Day02:
     Map(
       "A" -> Rps.Rock,
       "B" -> Rps.Paper,
-      "C" -> Rps.Scissors,
-      "X" -> Rps.Rock,
-      "Y" -> Rps.Paper,
-      "Z" -> Rps.Scissors
+      "C" -> Rps.Scissors
     )
 
   def shapeScore(x: Rps) =
