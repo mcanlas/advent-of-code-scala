@@ -9,7 +9,8 @@ object Runner extends ZIOAppDefault:
     Map(
       "day1"       -> Day01(take = 1).apply,
       "day1.part2" -> Day01(take = 3).apply,
-      "day2"       -> Day02.apply
+      "day2"       -> Day02(Part.One).apply,
+      "day2.part2" -> Day02(Part.Two).apply
     )
 
   def run: ZIO[ZIOAppArgs, Throwable, Unit] =

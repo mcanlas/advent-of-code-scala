@@ -5,11 +5,25 @@ import cats.data.*
 import cats.syntax.all.*
 
 object Day02:
-  def apply(xs: List[String]): String =
+  def apply(part: Part)(xs: List[String]): String =
     xs
       .map { str =>
-        val Array(them, me) =
-          str.split(" ").map(parse)
+        val xs =
+          str.split(" ")
+
+        val them =
+          parse(xs(0))
+
+        val meStrategy =
+          part match
+            case Part.One =>
+              parse
+
+            case Part.Two =>
+              parse
+
+        val me =
+          meStrategy(xs(1))
 
         val fightScore =
           rpsCycle
