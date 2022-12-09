@@ -7,12 +7,11 @@ import cats.data.*
 import cats.syntax.all.*
 
 object Day03:
-  def apply(xs: List[String]): String =
+  def apply(part: Part)(xs: List[String]): String =
     xs
-      .map(_.toList)
-      .map { chars =>
-        chars
-          .pipe(splitEvenly)
+      .pipe(toRucksacks(part))
+      .map { sacks =>
+        sacks
           .map(_.toSet)
           .reduce(_ intersect _)
       }
@@ -20,6 +19,23 @@ object Day03:
       .map(toPriority)
       .sumAll
       .toString
+
+  // the return type here is hilarious
+  private def toRucksacks(part: Part)(xs: List[String]) =
+    part match
+      case Part.One =>
+        xs
+          .map(_.toList)
+          .map { chars =>
+            chars
+              .pipe(splitEvenly)
+          }
+
+      case Part.Two =>
+        xs
+          .map(_.toList)
+          .grouped(3) // this method is amazing, thank you standard library
+          .toList
 
   private def splitEvenly[A](xs: List[A]) =
     val take =
