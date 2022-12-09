@@ -18,7 +18,7 @@ object Day05:
 
         val moves =
           movesStr
-            .flatMap(toMoves)
+            .flatMap(toMoves(part))
 
         val crateAfterMoves =
           moves
@@ -48,10 +48,15 @@ object Day05:
   // these are indices by now
   case class Move(src: Int, dest: Int)
 
-  private def toMoves(s: String) =
+  private def toMoves(part: Part)(s: String) =
     val MovePattern(n, src, dest) = s: @unchecked
 
-    List.fill(n.toInt)(Move(src.toInt - 1, dest.toInt - 1))
+    part match
+      case Part.One =>
+        List.fill(n.toInt)(Move(src.toInt - 1, dest.toInt - 1))
+
+      case Part.Two =>
+        Nil
 
   case class Crates(width: Int, stacks: List[List[Char]]):
     private lazy val indices =
