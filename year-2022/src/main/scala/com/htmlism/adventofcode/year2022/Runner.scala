@@ -8,6 +8,7 @@ object Runner extends ZIOAppDefault:
   val dispatch: Map[String, List[String] => String] =
     Map(
       "day5"       -> Day05(Part.One).apply,
+      "day5.part2" -> Day05(Part.Two).apply,
       "day4"       -> Day04(Part.One).apply,
       "day4.part2" -> Day04(Part.Two).apply,
       "day3"       -> Day03(Part.One).apply,

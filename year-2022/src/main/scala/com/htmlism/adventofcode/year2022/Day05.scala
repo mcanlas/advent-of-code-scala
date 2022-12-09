@@ -22,7 +22,7 @@ object Day05:
 
         val crateAfterMoves =
           moves
-            .foldLeft(crates)((acc, e) => acc.move(e.src, e.dest))
+            .foldLeft(crates)((acc, e) => acc.move(e))
 
         crateAfterMoves
       }
@@ -56,7 +56,7 @@ object Day05:
         List.fill(n.toInt)(Move(1, src.toInt - 1, dest.toInt - 1))
 
       case Part.Two =>
-        Nil
+        List(Move(n.toInt, src.toInt - 1, dest.toInt - 1))
 
   case class Crates(width: Int, stacks: List[List[Char]]):
     private lazy val indices =
@@ -80,27 +80,28 @@ object Day05:
 
         copy(stacks = stacks.updated(i, oldStack :+ x))
 
-    def move(src: Int, dest: Int): Crates =
+    def move(mv: Move): Crates =
       val oldSource =
-        stacks(src)
+        stacks(mv.src)
 
       val oldDest =
-        stacks(dest)
+        stacks(mv.dest)
 
-      val elem =
-        oldSource.last
+      val elems =
+        oldSource
+          .slice(oldSource.size - mv.depth, oldSource.size)
 
       val newSource =
         oldSource
-          .take(oldSource.size - 1)
+          .take(oldSource.size - mv.depth)
 
       val newDest =
-        oldDest :+ elem
+        oldDest ::: elems
 
       copy(stacks =
         stacks
-          .updated(src, newSource)
-          .updated(dest, newDest)
+          .updated(mv.src, newSource)
+          .updated(mv.dest, newDest)
       )
 
     def summarize: String =
