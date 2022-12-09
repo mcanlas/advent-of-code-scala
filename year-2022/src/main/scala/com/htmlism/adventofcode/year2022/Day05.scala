@@ -46,14 +46,14 @@ object Day05:
     """move (\d+) from (\d+) to (\d+)""".r
 
   // these are indices by now
-  case class Move(src: Int, dest: Int)
+  case class Move(depth: Int, src: Int, dest: Int)
 
   private def toMoves(part: Part)(s: String) =
     val MovePattern(n, src, dest) = s: @unchecked
 
     part match
       case Part.One =>
-        List.fill(n.toInt)(Move(src.toInt - 1, dest.toInt - 1))
+        List.fill(n.toInt)(Move(1, src.toInt - 1, dest.toInt - 1))
 
       case Part.Two =>
         Nil
