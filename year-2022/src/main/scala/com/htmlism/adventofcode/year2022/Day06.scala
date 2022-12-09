@@ -10,19 +10,25 @@ object Day06:
   def apply(part: Part)(xs: List[String]): String =
     xs
       .map(_.toList)
-      .map(processSignal)
+      .map(processSignal(messageWidth(part)))
       .mkString("\n")
       .toString
 
-  private def processSignal(xs: List[Char]) =
+  private def processSignal(width: Int)(xs: List[Char]) =
     xs
-      .sliding(4)
+      .sliding(width)
       .toList
-      .indexWhere(fragmentIsPositive) + 4
+      .indexWhere(fragmentIsPositive(width)) + width
 
-  private def fragmentIsPositive(xs: List[Char]) =
-    assert(xs.length == 4)
+  private def fragmentIsPositive(width: Int)(xs: List[Char]) =
+    assert(xs.length == width)
 
-    println(xs)
+    xs.toSet.size == width
 
-    xs.toSet.size == 4
+  private def messageWidth(part: Part) =
+    part match
+      case Part.One =>
+        4
+
+      case Part.Two =>
+        14
