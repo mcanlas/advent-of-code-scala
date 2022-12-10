@@ -32,11 +32,20 @@ object Day07:
             }
 
         dirsWithTotalSize
+      }
+      .pipe(solve(part))
+      .toString
+
+  private def solve(part: Part)(xs: List[(String, Int)]) =
+    part match
+      case Part.One =>
+        xs
           .map(_._2)
           .filter(_ < 100000)
           .sum
-      }
-      .toString
+
+      case Part.Two =>
+        0
 
   object Pat:
     val ChangeDirectory =
