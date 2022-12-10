@@ -22,13 +22,17 @@ object Day07:
             .map(_.slug)
             .distinct
 
-        uniqueDirs
-          .map { slug =>
-            xs
-              .filter(_.slug.startsWith(slug))
-              .map(_.x.size)
-              .sum
-          }
+        val dirsWithTotalSize =
+          uniqueDirs
+            .fproduct { slug =>
+              xs
+                .filter(_.slug.startsWith(slug))
+                .map(_.x.size)
+                .sum
+            }
+
+        dirsWithTotalSize
+          .map(_._2)
           .filter(_ < 100000)
           .sum
       }
