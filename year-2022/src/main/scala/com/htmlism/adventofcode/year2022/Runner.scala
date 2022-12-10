@@ -7,6 +7,7 @@ import com.htmlism.rufio.withzio.*
 object Runner extends ZIOAppDefault:
   val dispatch: Map[String, List[String] => String] =
     Map(
+      "day7"       -> Day07(Part.One).apply,
       "day6"       -> Day06(Part.One).apply,
       "day6.part2" -> Day06(Part.Two).apply,
       "day5"       -> Day05(Part.One).apply,
