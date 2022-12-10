@@ -45,7 +45,23 @@ object Day07:
           .sum
 
       case Part.Two =>
-        0
+        val deltaToFix =
+          xs.toMap.apply("/") - 40000000
+
+        xs
+          .filterNot(_._1 == "/")
+          .map(_._2)
+          .fproduct(_ - deltaToFix)
+          .foreach(println)
+
+        xs
+          .filterNot(_._1 == "/")
+          .map(_._2)
+          .fproduct(_ - deltaToFix)
+          .filter(_._2 > 0)
+          .sortBy(_._2)
+          .head
+          ._1
 
   object Pat:
     val ChangeDirectory =
