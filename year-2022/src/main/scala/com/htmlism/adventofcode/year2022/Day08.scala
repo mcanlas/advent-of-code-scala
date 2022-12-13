@@ -42,8 +42,8 @@ object Day08:
         .map(f => treeIsVisibleFromOneDir(height, f, f(tree)))
         .reduce(_ || _)
 
-    // @tailrec
-    def treeIsVisibleFromOneDir(
+    @tailrec
+    final def treeIsVisibleFromOneDir(
         treeHeight: Int,
         f: TreeGrid.Coord => TreeGrid.Coord,
         toQuery: TreeGrid.Coord
