@@ -10,14 +10,33 @@ import cats.syntax.all.*
 object Day08:
   def apply(part: Part)(xs: List[String]): String =
     xs
-      .map(_.toList.map(_.toInt))
+      .map(_.toList.map(_.toString.toInt))
       .pipe(TreeGrid(_))
       .pipe { grid =>
         grid
           .trees
-          .fproduct(grid.toHeights)
-          .map((grid.treeIsVisible _).tupled)
-          .count(identity)
+          .map { coord =>
+            val height =
+              grid(coord).getOrElse(sys.error("height available only for trees that exist"))
+
+            height -> grid.toHeights(coord)
+          }
+          .pipe { xs =>
+            part match
+              case Part.One =>
+                xs
+                  .map((grid.treeIsVisible _).tupled)
+                  .count(identity)
+
+              case Part.Two =>
+                xs
+                  .fproduct((grid.scenicScore _).tupled)
+                  .foreach(println)
+
+                xs
+                  .map((grid.scenicScore _).tupled)
+                  .max
+          }
       }
       .toString
 
@@ -26,28 +45,31 @@ object Day08:
 
     def trees: List[Coord] =
       (for {
-        x <- 0 until size
         y <- 0 until size
+        x <- 0 until size
       } yield Coord(x, y)).toList
 
     def apply(xy: Coord): Option[Int] =
       for {
-        row <- xs.get(xy.y)
-        n   <- row.get(xy.x)
-      } yield n
+        row    <- xs.get(xy.y)
+        height <- row.get(xy.x)
+      } yield height
 
     def toHeights(tree: Coord): List[List[Int]] =
       TreeGrid
         .visibilityCriteria
         .map(f => accHeights(f, f(tree), Nil))
 
-    def treeIsVisible(tree: Coord, dirs: List[List[Int]]) =
-      val height =
-        apply(tree).getOrElse(sys.error("visibility check only available for trees that exist"))
-
+    def treeIsVisible(height: Int, dirs: List[List[Int]]): Boolean =
       dirs
         .map(xs => xs.forall(_ < height))
         .reduce(_ || _)
+
+    // TODO take while not correct, use fold
+    def scenicScore(height: Int, dirs: List[List[Int]]): Int =
+      dirs
+        .map(xs => xs.takeWhile(_ <= height).size)
+        .product
 
     @tailrec
     def accHeights(
