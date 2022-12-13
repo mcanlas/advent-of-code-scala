@@ -16,8 +16,7 @@ object Day08:
         grid
           .trees
           .map(grid.treeIsVisible)
-          .filter(identity)
-          .size
+          .count(identity)
       }
       .toString
 
