@@ -65,11 +65,23 @@ object Day08:
         .map(xs => xs.forall(_ < height))
         .reduce(_ || _)
 
-    // TODO take while not correct, use fold
-    def scenicScore(height: Int, dirs: List[List[Int]]): Int =
+    def scenicScore(height: Int, dirs: List[List[Int]]) =
       dirs
-        .map(xs => xs.takeWhile(_ <= height).size)
+        .map(xs => viewableHeights(0, xs).size)
         .product
+
+    // TODO state monad?
+    private def viewableHeights(tree: Int, neighbors: List[Int]) =
+      neighbors
+        .foldLeft(tree -> List.empty[Int]) { (acc, e) =>
+          val (minHeight, keeps) = acc
+
+          if (e < minHeight)
+            minHeight -> keeps
+          else
+            e         -> (keeps :+ e)
+        }
+        ._2
 
     @tailrec
     def accHeights(
