@@ -21,41 +21,41 @@ object Day08:
       .toString
 
   case class TreeGrid(size: Int, xs: List[List[Int]]):
-    def trees: List[TreeGrid.Coord] =
+    import TreeGrid._
+
+    def trees: List[Coord] =
       (for {
         x <- 0 until size
         y <- 0 until size
-      } yield TreeGrid.Coord(x, y)).toList
+      } yield Coord(x, y)).toList
 
-    def apply(xy: TreeGrid.Coord): Option[Int] =
+    def apply(xy: Coord): Option[Int] =
       for {
         row <- xs.get(xy.y)
         n   <- row.get(xy.x)
       } yield n
 
-    def treeIsVisible(tree: TreeGrid.Coord): Boolean =
+    def treeIsVisible(tree: Coord): Boolean =
       val height =
         apply(tree).getOrElse(sys.error("visibility check only available for trees that exist"))
 
       TreeGrid
         .visibilityCriteria
-        .map(f => treeIsVisibleFromOneDir(height, f, f(tree)))
+        .map(f => accHeights(f, f(tree), Nil))
+        .map(xs => xs.forall(_ < height))
         .reduce(_ || _)
 
     @tailrec
-    final def treeIsVisibleFromOneDir(
-        treeHeight: Int,
-        f: TreeGrid.Coord => TreeGrid.Coord,
-        toQuery: TreeGrid.Coord
-    ): Boolean =
+    final def accHeights(
+        f: Coord => Coord,
+        toQuery: Coord,
+        acc: List[Int]
+    ): List[Int] =
       apply(toQuery) match
         case Some(neighborHeight) =>
-          if (neighborHeight < treeHeight)
-            treeIsVisibleFromOneDir(treeHeight, f, f(toQuery))
-          else
-            false
+          accHeights(f, f(toQuery), acc :+ neighborHeight)
         case None                 =>
-          true
+          acc
 
   object TreeGrid:
     def apply(xs: List[List[Int]]): TreeGrid =
