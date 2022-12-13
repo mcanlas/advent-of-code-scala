@@ -35,6 +35,7 @@ object Day08:
 
                 xs
                   .map((grid.scenicScore _).tupled)
+                  .map(_.product)
                   .max
           }
       }
@@ -68,7 +69,6 @@ object Day08:
     def scenicScore(height: Int, dirs: List[List[Int]]) =
       dirs
         .map(xs => viewableHeights(0, xs).size)
-        .product
 
     // TODO state monad?
     private def viewableHeights(tree: Int, neighbors: List[Int]) =
@@ -76,10 +76,10 @@ object Day08:
         .foldLeft(tree -> List.empty[Int]) { (acc, e) =>
           val (minHeight, keeps) = acc
 
-          if (e < minHeight)
-            minHeight -> keeps
-          else
+          if (e >= minHeight)
             e         -> (keeps :+ e)
+          else
+            minHeight -> keeps
         }
         ._2
 
