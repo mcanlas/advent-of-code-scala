@@ -15,12 +15,13 @@ object Day08:
       .pipe { grid =>
         grid
           .trees
-          .map(grid.treeIsVisible)
+          .fproduct(grid.toHeights)
+          .map((grid.treeIsVisible _).tupled)
           .count(identity)
       }
       .toString
 
-  case class TreeGrid(size: Int, xs: List[List[Int]]):
+  final case class TreeGrid(size: Int, xs: List[List[Int]]):
     import TreeGrid._
 
     def trees: List[Coord] =
@@ -35,18 +36,21 @@ object Day08:
         n   <- row.get(xy.x)
       } yield n
 
-    def treeIsVisible(tree: Coord): Boolean =
-      val height =
-        apply(tree).getOrElse(sys.error("visibility check only available for trees that exist"))
-
+    def toHeights(tree: Coord): List[List[Int]] =
       TreeGrid
         .visibilityCriteria
         .map(f => accHeights(f, f(tree), Nil))
+
+    def treeIsVisible(tree: Coord, dirs: List[List[Int]]) =
+      val height =
+        apply(tree).getOrElse(sys.error("visibility check only available for trees that exist"))
+
+      dirs
         .map(xs => xs.forall(_ < height))
         .reduce(_ || _)
 
     @tailrec
-    final def accHeights(
+    def accHeights(
         f: Coord => Coord,
         toQuery: Coord,
         acc: List[Int]
