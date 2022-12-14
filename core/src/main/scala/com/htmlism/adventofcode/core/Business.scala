@@ -6,21 +6,19 @@ import cats.syntax.all._
 
 import com.htmlism.adventofcode.core.syntax._
 
-final case class Business[A](log: Chain[String], stack: Chain[String], x: A):
+final case class Business[A](log: Chain[String], depth: Int, x: A):
   def bmap[B](fs: A => String, fb: A => B): Business[B] =
-    copy(stack = stack :+ fs(x), x = fb(x))
+    val newLine =
+      ("  " * depth) + fs(x)
 
-  def bothLog: Chain[String] =
-    stack
-      .foldLeft(0 -> log) { (acc, s) =>
-        val (depth, logs) = acc
-
-        (depth + 1) -> (logs :+ ("  " * depth) + s)
-      }
-      ._2
+    Business(
+      log :+ newLine,
+      depth + 1,
+      fb(x)
+    )
 
   def printAndGet(): A =
-    bothLog
+    log
       .iterator
       .foreach(println)
 
@@ -33,18 +31,18 @@ final case class Business[A](log: Chain[String], stack: Chain[String], x: A):
   def flatMap[B](f: A => Business[B]): Business[B] =
     val fb = f(x)
 
-    Business(bothLog ++ fb.bothLog.map("  " + _), stack, fb.x)
+    Business(log ++ fb.log.map("  " + _), depth + 1, fb.x)
 
 object Business:
   def apply[A](s: String, x: A): Business[A] =
-    Business(Chain.empty, Chain(s), x)
+    Business(Chain(s), depth = 1, x)
 
   given Applicative[Business] with
     def pure[A](x: A): Business[A] =
-      Business(Chain.empty, Chain.empty, x)
+      Business(Chain.empty, depth = 0, x)
 
     def ap[A, B](ff: Business[A => B])(fa: Business[A]): Business[B] =
-      Business(ff.bothLog ++ fa.bothLog, Chain.empty, ff.x(fa.x))
+      Business(ff.log ++ fa.log, depth = 0, ff.x(fa.x))
 
 object Demo extends App:
   val a =
@@ -60,9 +58,7 @@ object Demo extends App:
   (a, b)
     .tupled
     .bmap(_ => "hello", identity)
-    .bothLog
-    .toList
-    .foreach(println)
+    .printAndGet()
 
   List(1, 2, 3)
     .traverse { n =>
@@ -71,17 +67,13 @@ object Demo extends App:
         .bmap(_ => "plus two", _ + 2)
     }
     .bmap(_ => "summarize", _.sum)
-    .bothLog
-    .toList
-    .foreach(println)
+    .printAndGet()
 
   List(4, 5, 6)
     .bfoldLeft(0) { (acc, e) =>
       (s"$acc + $e", acc + e)
     }
-    .bothLog
-    .toList
-    .foreach(println)
+    .printAndGet()
 
   (for {
     x <- Business("abc", 123)
