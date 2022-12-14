@@ -19,6 +19,13 @@ final case class Business[A](log: Chain[String], stack: Chain[String], x: A):
       }
       ._2
 
+  def printAndGet(): A =
+    bothLog
+      .iterator
+      .foreach(println)
+
+    x
+
 object Business:
   def apply[A](s: String, x: A): Business[A] =
     Business(Chain.empty, Chain(s), x)

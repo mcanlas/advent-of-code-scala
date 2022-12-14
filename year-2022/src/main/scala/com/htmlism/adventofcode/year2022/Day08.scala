@@ -7,6 +7,8 @@ import cats.*
 import cats.data.*
 import cats.syntax.all.*
 
+import com.htmlism.adventofcode.core._
+
 object Day08:
   def apply(part: Part)(xs: List[String]): String =
     xs
@@ -30,13 +32,13 @@ object Day08:
 
               case Part.Two =>
                 xs
-                  .fproduct((grid.scenicScore _).tupled)
-                  .foreach(println)
-
-                xs
-                  .map((grid.scenicScore _).tupled)
-                  .map(_.product)
-                  .max
+                  .traverse { case (height, dirs) =>
+                    Business(s"$height ${dirs.toString}", height -> dirs)
+                      .bmap(_ => "scenic score", (grid.scenicScore _).tupled)
+                  }
+                  .bmap(xs => "product: " + xs.toString, _.map(_.product))
+                  .bmap(xs => "max: " + xs.max, _.max)
+                  .printAndGet()
           }
       }
       .toString
