@@ -26,6 +26,15 @@ final case class Business[A](log: Chain[String], stack: Chain[String], x: A):
 
     x
 
+  /**
+    * `Business` can merge logs with `Applicative` but builds hierarchical structure using `flatMap` syntax. This
+    * hierarchy makes it not a lawful monad (e.g. (A link B) link C != A link (B link C))
+    */
+  def flatMap[B](f: A => Business[B]): Business[B] =
+    val fb = f(x)
+
+    Business(bothLog ++ fb.bothLog.map("  " + _), stack, fb.x)
+
 object Business:
   def apply[A](s: String, x: A): Business[A] =
     Business(Chain.empty, Chain(s), x)
@@ -73,3 +82,10 @@ object Demo extends App:
     .bothLog
     .toList
     .foreach(println)
+
+  (for {
+    x <- Business("abc", 123)
+
+    y <- Business("plus one", x + 1)
+  } yield y)
+    .printAndGet()

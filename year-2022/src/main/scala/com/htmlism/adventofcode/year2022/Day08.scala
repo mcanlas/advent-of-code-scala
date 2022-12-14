@@ -21,22 +21,30 @@ object Day08:
             val height =
               grid(coord).getOrElse(sys.error("height available only for trees that exist"))
 
-            height -> grid.toHeights(coord)
+            (coord, height, grid.toHeights(coord))
           }
           .pipe { xs =>
             part match
               case Part.One =>
                 xs
-                  .map((grid.treeIsVisible _).tupled)
+                  .map { case (_, height, heights) => grid.treeIsVisible(height, heights) }
                   .count(identity)
 
               case Part.Two =>
                 xs
-                  .traverse { case (height, dirs) =>
-                    Business(s"$height ${dirs.toString}", height -> dirs)
-                      .bmap(_ => "scenic score", (grid.scenicScore _).tupled)
+                  .traverse { case (coord, height, dirs) =>
+                    Business(s"$coord height $height", height)
+                      .flatMap { n =>
+                        dirs
+                          .traverse { hs =>
+                            val score =
+                              grid.scenicScore(n, hs)
+
+                            Business(s"${hs.toString} => $score", score)
+                          }
+                      }
+                      .bmap(xs => s"scenic score ${xs.product}", _.product)
                   }
-                  .bmap(xs => "product: " + xs.toString, _.map(_.product))
                   .bmap(xs => "max: " + xs.max, _.max)
                   .printAndGet()
           }
@@ -50,7 +58,7 @@ object Day08:
       (for {
         y <- 0 until size
         x <- 0 until size
-      } yield Coord(x, y)).toList
+      } yield Coord(y, x)).toList
 
     def apply(xy: Coord): Option[Int] =
       for {
@@ -68,20 +76,24 @@ object Day08:
         .map(xs => xs.forall(_ < height))
         .reduce(_ || _)
 
-    def scenicScore(height: Int, dirs: List[List[Int]]) =
-      dirs
-        .map(xs => viewableHeights(0, xs).size)
+    def scenicScore(height: Int, heights: List[Int]): Int =
+      viewableHeights(height, heights).size
 
     // TODO state monad?
-    private def viewableHeights(tree: Int, neighbors: List[Int]) =
+    private def viewableHeights(centerHeight: Int, neighbors: List[Int]) =
       neighbors
-        .foldLeft(tree -> List.empty[Int]) { (acc, e) =>
+        .foldLeft(0 -> List.empty[Int]) { (acc, e) =>
           val (minHeight, keeps) = acc
 
+<<<<<<< HEAD
           if (e >= minHeight)
             e -> (keeps :+ e)
+=======
+          if (e >= minHeight && e <= centerHeight)
+            e            -> (keeps :+ e)
+>>>>>>> 53a370f (not correct)
           else
-            minHeight -> keeps
+            Int.MaxValue -> keeps
         }
         ._2
 
@@ -101,7 +113,7 @@ object Day08:
     def apply(xs: List[List[Int]]): TreeGrid =
       TreeGrid(xs.size, xs)
 
-    case class Coord(x: Int, y: Int)
+    case class Coord(y: Int, x: Int)
 
     val visibilityCriteria =
       List[Coord => Coord](
