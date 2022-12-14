@@ -76,12 +76,16 @@ object Day08:
         .map(xs => xs.forall(_ < height))
         .reduce(_ || _)
 
-    def scenicScore(height: Int, heights: List[Int]): Int =
-      viewableHeights(height, heights).size
+    // `zipWithIndex` strategy taken from someone's scala solution on reddit =(
+    // solution was to stop at the first tree that is gte the center tree
+    // reading comprehension is hard
 
-    // TODO state monad?
-    private def viewableHeights(centerHeight: Int, neighbors: List[Int]) =
+    // we can see past the middle 3
+    assert(scenicScore(4, List(2, 3, 2)) == 3)
+
+    def scenicScore(centerHeight: Int, neighbors: List[Int]): Int =
       neighbors
+<<<<<<< HEAD
         .foldLeft(0 -> List.empty[Int]) { (acc, e) =>
           val (minHeight, keeps) = acc
 
@@ -96,6 +100,12 @@ object Day08:
             Int.MaxValue -> keeps
         }
         ._2
+=======
+        .zipWithIndex
+        .find(_._1 >= centerHeight)
+        .map(_._2 + 1)
+        .getOrElse(neighbors.size)
+>>>>>>> 8cf7fea (solved)
 
     @tailrec
     def accHeights(
