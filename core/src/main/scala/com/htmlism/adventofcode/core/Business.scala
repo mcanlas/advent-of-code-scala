@@ -1,8 +1,10 @@
-package com.htmlism.adventofcode.year2022
+package com.htmlism.adventofcode.core
 
 import cats._
 import cats.data._
 import cats.syntax.all._
+
+import com.htmlism.adventofcode.core.syntax._
 
 final case class Business[A](log: Chain[String], stack: Chain[String], x: A):
   def bmap[B](fs: A => String, fb: A => B): Business[B] =
@@ -58,8 +60,8 @@ object Demo extends App:
     .foreach(println)
 
   List(4, 5, 6)
-    .foldLeft(Applicative[Business].pure(0)) { (acc, e) =>
-      acc *> Business(s"${acc.x} + $e", acc.x + e)
+    .bfoldLeft(0) { (acc, e) =>
+      (s"$acc + $e", acc + e)
     }
     .bothLog
     .toList
