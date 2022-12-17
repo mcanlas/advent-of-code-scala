@@ -43,9 +43,9 @@ object Day08:
                             Business(s"${hs.toString} => $score", score)
                           }
                       }
-                      .bmap(xs => s"scenic score ${xs.product}", _.product)
+                      .bmap(xs => s"scenic score ${xs.product}" -> xs.product)
                   }
-                  .bmap(xs => "max: " + xs.max, _.max)
+                  .bmap(xs => "max: " + xs.max -> xs.max)
                   .printAndGet()
           }
       }

@@ -7,14 +7,17 @@ import cats.syntax.all._
 import com.htmlism.adventofcode.core.syntax._
 
 final case class Business[A](log: Chain[String], depth: Int, x: A):
-  def bmap[B](fs: A => String, fb: A => B): Business[B] =
+  def bmap[B](f: A => (String, B)): Business[B] =
+    val (s, b) =
+      f(x)
+
     val newLine =
-      ("  " * depth) + fs(x)
+      ("  " * depth) + s
 
     Business(
       log :+ newLine,
       depth + 1,
-      fb(x)
+      b
     )
 
   def printAndGet(): A =
@@ -48,25 +51,25 @@ object Demo extends App:
   val a =
     Applicative[Business]
       .pure(123)
-      .bmap(_ => "plus", _ + 1)
+      .bmap(n => "plus" -> (n + 1))
 
   val b =
     Applicative[Business]
       .pure(456)
-      .bmap(_ => "plus", _ + 1)
+      .bmap(n => "plus" -> (n + 1))
 
   (a, b)
     .tupled
-    .bmap(_ => "hello", identity)
+    .bmap(n => "hello" -> n)
     .printAndGet()
 
   List(1, 2, 3)
     .traverse { n =>
       Business("start", n)
-        .bmap(_ => "plus one", _ + 1)
-        .bmap(_ => "plus two", _ + 2)
+        .bmap(n => "plus one" -> (n + 1))
+        .bmap(n => "plus two" -> (n + 2))
     }
-    .bmap(_ => "summarize", _.sum)
+    .bmap(n => "summarize" -> n.sum)
     .printAndGet()
 
   List(4, 5, 6)
