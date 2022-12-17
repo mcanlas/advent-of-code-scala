@@ -25,7 +25,7 @@ object Day11:
       }
       ._2
       .pipe { state =>
-        (0 until 20)
+        (0 until 1000)
           .foldLeft(state)((acc, _) => iterateRound(acc, worryDispatch(part)))
       }
       .pipe { xs =>
@@ -45,10 +45,10 @@ object Day11:
       }
       .toString
 
-  def worryDispatch(part: Part): Int => Int =
+  def worryDispatch(part: Part): Long => Long =
     part match
       case Part.One =>
-        (_: Int) / 3
+        (_: Long) / 3
       case Part.Two =>
         identity
 
@@ -60,7 +60,7 @@ object Day11:
       }
       .foreach(println)
 
-  def iterateRound(xs: List[Monkey], worryAdjustment: Int => Int): List[Monkey] =
+  def iterateRound(xs: List[Monkey], worryAdjustment: Long => Long): List[Monkey] =
     xs
       .indices
       .foldLeft(xs) { (state, monkeyIndex) =>
@@ -73,8 +73,8 @@ object Day11:
             .map(n => curMonkey.f(n))
             .map(worryAdjustment)
 
-        println("Started with: " + curMonkey.items.mkString(", "))
-        println("Became: " + items.mkString(", "))
+        // println("Started with: " + curMonkey.items.mkString(", "))
+        // println("Became: " + items.mkString(", "))
 
         val monkeysAfterThrowing =
           items
@@ -92,18 +92,18 @@ object Day11:
                 .updated(throwTarget, targetMonkey.copy(items = targetMonkey.items :+ thrownItem))
             }
 
-        println {
-          monkeysAfterThrowing
-            .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
-        }
+        // println {
+        //   monkeysAfterThrowing
+        //     .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
+        // }
 
         monkeysAfterThrowing
           .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
       }
 
   final case class Monkey(
-      items: List[Int],
-      f: Int => Int,
+      items: List[Long],
+      f: Long => Long,
       divisor: Int,
       trueTarget: Int,
       falseTarget: Int,
@@ -134,7 +134,7 @@ object Day11:
       val items =
         itemsStr
           .split(", ")
-          .map(_.toInt)
+          .map(_.toLong)
           .toList
 
       val Operation(operatorStr, operandStr) =
@@ -143,10 +143,10 @@ object Day11:
       val operationHole =
         operatorStr match
           case "*" =>
-            (y: Int) => (x: Int) => x * y
+            (y: Long) => (x: Long) => x * y
 
           case "+" =>
-            (y: Int) => (x: Int) => x + y
+            (y: Long) => (x: Long) => x + y
 
           case _ =>
             sys.error(s"cannot parse $operatorStr")
@@ -154,10 +154,10 @@ object Day11:
       val operation =
         operandStr match
           case "old" =>
-            (n: Int) => operationHole(n)(n)
+            (n: Long) => operationHole(n)(n)
 
           case n =>
-            operationHole(n.toInt)
+            operationHole(n.toLong)
 
       val DivisibleBy(divisorStr) =
         xs(2): @unchecked
