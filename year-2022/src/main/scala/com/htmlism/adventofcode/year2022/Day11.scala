@@ -23,9 +23,66 @@ object Day11:
         else
           (proto :+ s) -> monkeys
       }
+      ._2
+      .pipe { state =>
+        (0 until 20)
+          .foldLeft(state)((acc, _) => iterateRound(acc))
+      }
+      .pipe(printRound)
       .toString
 
-  final case class Monkey(items: List[Int], f: Int => Int, divisor: Int, trueTarget: Int, falseTarget: Int)
+  def printRound(xs: List[Monkey]): Unit =
+    xs
+      .zipWithIndex
+      .map { case (m, i) =>
+        s"Monkey $i: " + m.items.map(_.toString).mkString(", ")
+      }
+      .foreach(println)
+
+  def iterateRound(xs: List[Monkey]): List[Monkey] =
+    xs
+      .indices
+      .foldLeft(xs) { (state, monkeyIndex) =>
+        val curMonkey =
+          state(monkeyIndex)
+
+        val items =
+          curMonkey
+            .items
+            .map(n => curMonkey.f(n))
+            .map(_ / 3)
+
+        println("Started with: " + curMonkey.items.mkString(", "))
+        println("Became: " + items.mkString(", "))
+
+        val monkeysAfterThrowing =
+          items
+            .foldLeft(state) { (stateThrown, thrownItem) =>
+              val throwTarget =
+                if (thrownItem % curMonkey.divisor == 0)
+                  curMonkey.trueTarget
+                else
+                  curMonkey.falseTarget
+
+              val targetMonkey =
+                stateThrown(throwTarget)
+
+              stateThrown
+                .updated(throwTarget, targetMonkey.copy(items = targetMonkey.items :+ thrownItem))
+            }
+
+        println {
+          monkeysAfterThrowing
+            .updated(monkeyIndex, curMonkey.copy(items = Nil))
+        }
+
+        monkeysAfterThrowing
+          .updated(monkeyIndex, curMonkey.copy(items = Nil))
+      }
+
+  final case class Monkey(items: List[Int], f: Int => Int, divisor: Int, trueTarget: Int, falseTarget: Int):
+    override def toString: String =
+      "Monkey(" + items.mkString(", ") + ")"
 
   object Monkey:
     val StartingItems =
