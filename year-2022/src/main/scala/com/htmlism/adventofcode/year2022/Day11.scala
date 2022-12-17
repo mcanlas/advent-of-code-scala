@@ -26,10 +26,31 @@ object Day11:
       ._2
       .pipe { state =>
         (0 until 20)
-          .foldLeft(state)((acc, _) => iterateRound(acc))
+          .foldLeft(state)((acc, _) => iterateRound(acc, worryDispatch(part)))
       }
-      .pipe(printRound)
+      .pipe { xs =>
+        printRound(xs)
+
+        xs
+          .map(_.inspectCount)
+          .foreach(println)
+
+        xs
+          .map(_.inspectCount)
+          .sorted
+          .reverse
+      }
+      .pipe { mostActiveMonkeys =>
+        mostActiveMonkeys(0) * mostActiveMonkeys(1)
+      }
       .toString
+
+  def worryDispatch(part: Part): Int => Int =
+    part match
+      case Part.One =>
+        (_: Int) / 3
+      case Part.Two =>
+        identity
 
   def printRound(xs: List[Monkey]): Unit =
     xs
@@ -39,7 +60,7 @@ object Day11:
       }
       .foreach(println)
 
-  def iterateRound(xs: List[Monkey]): List[Monkey] =
+  def iterateRound(xs: List[Monkey], worryAdjustment: Int => Int): List[Monkey] =
     xs
       .indices
       .foldLeft(xs) { (state, monkeyIndex) =>
@@ -50,7 +71,7 @@ object Day11:
           curMonkey
             .items
             .map(n => curMonkey.f(n))
-            .map(_ / 3)
+            .map(worryAdjustment)
 
         println("Started with: " + curMonkey.items.mkString(", "))
         println("Became: " + items.mkString(", "))
@@ -73,14 +94,21 @@ object Day11:
 
         println {
           monkeysAfterThrowing
-            .updated(monkeyIndex, curMonkey.copy(items = Nil))
+            .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
         }
 
         monkeysAfterThrowing
-          .updated(monkeyIndex, curMonkey.copy(items = Nil))
+          .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
       }
 
-  final case class Monkey(items: List[Int], f: Int => Int, divisor: Int, trueTarget: Int, falseTarget: Int):
+  final case class Monkey(
+      items: List[Int],
+      f: Int => Int,
+      divisor: Int,
+      trueTarget: Int,
+      falseTarget: Int,
+      inspectCount: Int
+  ):
     override def toString: String =
       "Monkey(" + items.mkString(", ") + ")"
 
@@ -145,5 +173,6 @@ object Day11:
         operation,
         divisorStr.toInt,
         trueTargetStr.toInt,
-        falseTargetStr.toInt
+        falseTargetStr.toInt,
+        0
       )
