@@ -25,7 +25,14 @@ object Day11:
       }
       ._2
       .pipe { state =>
-        (0 until 1000)
+        val numRounds =
+          part match
+            case Part.One =>
+              20
+            case Part.Two =>
+              10000
+
+        (0 until numRounds)
           .foldLeft(state)((acc, _) => iterateRound(acc, worryDispatch(part)))
       }
       .pipe { xs =>
@@ -48,7 +55,7 @@ object Day11:
   def worryDispatch(part: Part): Long => Long =
     part match
       case Part.One =>
-        (_: Long) / 3
+        (_: Long) / 3L
       case Part.Two =>
         identity
 
@@ -73,8 +80,8 @@ object Day11:
             .map(n => curMonkey.f(n))
             .map(worryAdjustment)
 
-        // println("Started with: " + curMonkey.items.mkString(", "))
-        // println("Became: " + items.mkString(", "))
+        println("Started with: " + curMonkey.items.mkString(", "))
+        println("Became: " + items.mkString(", "))
 
         val monkeysAfterThrowing =
           items
@@ -92,10 +99,10 @@ object Day11:
                 .updated(throwTarget, targetMonkey.copy(items = targetMonkey.items :+ thrownItem))
             }
 
-        // println {
-        //   monkeysAfterThrowing
-        //     .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
-        // }
+        println {
+          monkeysAfterThrowing
+            .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
+        }
 
         monkeysAfterThrowing
           .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
@@ -140,24 +147,19 @@ object Day11:
       val Operation(operatorStr, operandStr) =
         xs(1): @unchecked
 
-      val operationHole =
-        operatorStr match
-          case "*" =>
-            (y: Long) => (x: Long) => x * y
+      val operation: Long => Long =
+        (operatorStr, operandStr) match
+          case ("*", "old") =>
+            (n: Long) => n * n
 
-          case "+" =>
-            (y: Long) => (x: Long) => x + y
+          case ("*", n) =>
+            (_ * n.toInt)
+
+          case ("+", n) =>
+            (_ + n.toInt)
 
           case _ =>
-            sys.error(s"cannot parse $operatorStr")
-
-      val operation =
-        operandStr match
-          case "old" =>
-            (n: Long) => operationHole(n)(n)
-
-          case n =>
-            operationHole(n.toLong)
+            sys.error(s"cannot parse $operatorStr $operandStr")
 
       val DivisibleBy(divisorStr) =
         xs(2): @unchecked
@@ -176,3 +178,22 @@ object Day11:
         falseTargetStr.toInt,
         0
       )
+
+  assert(toPrimeFactors(2) == List(2))
+  assert(toPrimeFactors(3) == List(3))
+  assert(toPrimeFactors(10) == List(2, 5))
+  assert(toPrimeFactors(11) == List(11))
+  assert(toPrimeFactors(42) == List(2, 3, 7))
+
+  def toPrimeFactors(n: Int): List[Int] =
+    toPrimeFactorsRecur(n, 2, Nil)
+
+  def toPrimeFactorsRecur(n: Int, divisor: Int, factors: List[Int]): List[Int] =
+    if (n == 1) factors
+    else
+      assert(divisor <= n)
+
+      if (n % divisor == 0)
+        toPrimeFactorsRecur(n / divisor, divisor, factors :+ divisor)
+      else
+        toPrimeFactorsRecur(n, divisor + 1, factors)
