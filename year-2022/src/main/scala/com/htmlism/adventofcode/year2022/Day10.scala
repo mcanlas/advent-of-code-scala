@@ -29,22 +29,39 @@ object Day10:
             sys.error(s"cannot parse $s")
       }
       ._2
-      .pipe { signalHistory =>
-        val ofInterest =
-          List(20, 60, 100, 140, 180, 220)
+      .toNonEmptyVector
+      .pipe { lookup =>
+        part match
+          case Part.One =>
+            val ofInterest =
+              List(20, 60, 100, 140, 180, 220)
 
-        val lookup =
-          signalHistory.toNonEmptyVector
+            ofInterest
+              .fproduct(n => lookup.getUnsafe(n - 1).x)
+              .pipe { x =>
+                println(x); x
+              }
+              .map(t => t._1 * t._2)
+              .sum
 
-        println(signalHistory.size)
+          case Part.Two =>
+            (0 until 6)
+              .map { y =>
+                (1 to 40)
+                  .map { x =>
+                    val stateIndex = x + (y * 40)
 
-        ofInterest
-          .fproduct(n => lookup.getUnsafe(n - 1).x)
-          .pipe { x =>
-            println(x); x
-          }
-          .map(t => t._1 * t._2)
-          .sum
+                    val drawPosition =
+                      lookup.getUnsafe(stateIndex - 1).x
+
+                    if (drawPosition - 1 <= x - 1 && x - 1 <= drawPosition + 1)
+                      "#"
+                    else
+                      "."
+                  }
+                  .mkString("")
+              }
+              .mkString("\n")
       }
       .toString
 
