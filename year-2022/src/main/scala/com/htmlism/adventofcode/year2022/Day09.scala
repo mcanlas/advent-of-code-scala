@@ -11,19 +11,33 @@ import com.htmlism.adventofcode.core._
 
 object Day09:
   def apply(part: Part)(xs: List[String]): String =
+    val snakeLength =
+      part match
+        case Part.One =>
+          2
+        case Part.Two =>
+          10
+
+    val snake =
+      Snake(snakeLength)
+
     xs
-      .iterator
-      .flatMap { s =>
+      .map { s =>
         val Array(d, n) =
           s.split(" ")
 
-        List
-          .fill(n.toInt)(d)
+        d -> n.toInt
       }
       .foldLeft(
-        (Set(Coord(0, 0)), Coord(0, 0), Coord(0, 0))
-      ) { (acc, d) =>
-        val (history, headPosition, tailPosition) =
+        (Set(Coord(0, 0)), snake)
+      ) { (acc, dn) =>
+        val (d, n) =
+          dn
+
+        println
+        println(dn)
+
+        val (history, snake) =
           acc
 
 //        println(d + ": " + history.toList.sortBy(_.toString))
@@ -32,38 +46,27 @@ object Day09:
         val dir =
           dispatch(d)
 
-        val newHeadPosition =
-          dir(headPosition)
+        val (newHistory, newSnake) =
+          (1 to n)
+            .toList
+            .foldLeft(history -> snake) { (acc, _) =>
+              val newSnake =
+                acc._2.nudge(dir)
 
-        assert(newHeadPosition.dist(tailPosition, _.x).abs <= 2, newHeadPosition.toString + " " + tailPosition.toString)
-        assert(newHeadPosition.dist(tailPosition, _.y).abs <= 2, newHeadPosition.toString + " " + tailPosition.toString)
-
-        val newTailPosition =
-          nudgeT(newHeadPosition, tailPosition).x
-
-        println(s"$d $newHeadPosition $newTailPosition")
-
-        val newHistory =
-          history + newTailPosition
-
-//        newHistory
-//          .pipe { xs =>
-//            for {
-//              y <- xs.toList.map(_.y).max to 0 by -1
-//            } yield
-//              for {
-//                x <- 0 to xs.toList.map(_.x).max
-//              } yield
-//                if (xs.contains(Coord(x, y)))
-//                  print("x")
-//                else
-//                  print(".")
+//              newSnake.printSnake(Set.empty)
 //              println
-//
-//            xs
-//          }
 
-        (newHistory, newHeadPosition, newTailPosition)
+              val newHistory =
+                acc._1 + newSnake.xs.last
+
+              newHistory -> newSnake
+            }
+
+        (newHistory, newSnake)
+      }
+      .pipe { x =>
+        x._2.printSnake(x._1)
+        x
       }
       ._1
       .size
@@ -73,47 +76,66 @@ object Day09:
     def dist(that: Coord, by: Coord => Int): Int =
       by(this) - by(that)
 
-  assert(nudgeT(Coord(0, 0), Coord(0, 0)).x == Coord(0, 0))
+  def assertNudge(head: Coord, tail: Coord, exp: Coord) =
+    assert(
+      nudgeT(head, tail) == exp,
+      "\nHead: " + head.toString + "\nTail: " + tail.toString + "\nGot: " + nudgeT(head, tail)
+    )
+
+  assertNudge(Coord(0, 0), Coord(0, 0), Coord(0, 0))
 
   // close by? do nothing
-  assert(nudgeT(Coord(1, 0), Coord(0, 0)).x == Coord(0, 0))
-  assert(nudgeT(Coord(0, 1), Coord(0, 0)).x == Coord(0, 0))
+  assertNudge(Coord(1, 0), Coord(0, 0), Coord(0, 0))
+  assertNudge(Coord(0, 1), Coord(0, 0), Coord(0, 0))
 
   // one dimension? go to it
-  assert(nudgeT(Coord(2, 0), Coord(0, 0)).x == Coord(1, 0))
-  assert(nudgeT(Coord(0, 2), Coord(0, 0)).x == Coord(0, 1))
+  assertNudge(Coord(2, 0), Coord(0, 0), Coord(1, 0))
+  assertNudge(Coord(0, 2), Coord(0, 0), Coord(0, 1))
 
   // diagonal? tailwind
-  assert(nudgeT(Coord(2, 1), Coord(0, 0)).x == Coord(1, 1))
-  assert(nudgeT(Coord(1, 2), Coord(0, 0)).x == Coord(1, 1))
+  assertNudge(Coord(2, 1), Coord(0, 0), Coord(1, 1))
+  assertNudge(Coord(1, 2), Coord(0, 0), Coord(1, 1))
 
-  def nudgeT(head: Coord, tail: Coord): Business[Coord] =
-    tail
-      .pure[Business]
-      .bmap(t =>
-        head.dist(t, _.x) match {
-          case n if n > 1 =>
-            "move right" -> t.copy(x = t.x + 1, y = head.y)
+  // part two diagonal? corner
+  assertNudge(Coord(2, 2), Coord(0, 0), Coord(1, 1))
+  assertNudge(Coord(2, 2), Coord(0, 0), Coord(1, 1))
 
-          case n if n < -1 =>
-            "move left" -> t.copy(x = t.x - 1, y = head.y)
+  def nudgeT(head: Coord, tail: Coord): Coord =
+    val xDiff =
+      head.dist(tail, _.x)
 
-          case _ =>
-            "no x" -> t
-        }
-      )
-      .bmap(t =>
-        head.dist(t, _.y) match {
-          case n if n > 1 =>
-            "move up" -> t.copy(y = t.y + 1, x = head.x)
+    val yDiff =
+      head.dist(tail, _.y)
 
-          case n if n < -1 =>
-            "move down" -> t.copy(y = t.y - 1, x = head.x)
+    Business("tail", tail).bmap { t =>
+      if (xDiff.abs > 1)
+        val newX =
+          t.x + xDiff / 2
 
-          case _ =>
-            "no y" -> t
-        }
-      )
+        val newY =
+          if (yDiff > 0)
+            t.y + 1
+          else if (yDiff < 0)
+            t.y - 1
+          else
+            t.y
+
+        "x" -> Coord(newX, newY)
+      else if (yDiff.abs > 1)
+        val newY =
+          t.y + yDiff / 2
+
+        val newX =
+          if (xDiff > 0)
+            t.x + 1
+          else if (xDiff < 0)
+            t.x - 1
+          else
+            t.x
+
+        "y" -> Coord(newX, newY)
+      else "none" -> t
+    }.x
 
   val dispatch: Map[String, Coord => Coord] =
     Map(
@@ -122,3 +144,47 @@ object Day09:
       "U" -> (c => c.copy(y = c.y + 1)),
       "D" -> (c => c.copy(y = c.y - 1))
     )
+
+  case class Snake(minX: Int, maxX: Int, minY: Int, maxY: Int, xs: List[Coord]):
+    def nudge(f: Coord => Coord): Snake =
+      val newHead =
+        f(xs.head)
+
+      val withNewHead =
+        xs
+          .updated(0, f(xs.head))
+
+      val newMinX = List(minX, newHead.x).min
+      val newMaxX = List(maxX, newHead.x).max
+
+      val newMinY = List(minY, newHead.y).min
+      val newMaxY = List(maxY, newHead.y).max
+
+      (0 until xs.size - 1)
+        .foldLeft(withNewHead) { (acc, i) =>
+          acc
+            .updated(i + 1, nudgeT(acc(i), acc(i + 1)))
+        }
+        .pipe(xs => Snake(newMinX, newMaxX, newMinY, newMaxY, xs))
+
+    def printSnake(hist: Set[Coord]): Unit =
+      for {
+        y <- maxY to minY by -1
+      } yield
+        for {
+          x <- minX to maxX
+        } yield xs
+          .zipWithIndex
+          .find(_._1 == Coord(x, y)) match
+          case Some((_, i)) =>
+            print(i)
+          case None         =>
+            if (hist(Coord(x, y)))
+              print("#")
+            else
+              print(".")
+        println
+
+  object Snake:
+    def apply(knots: Int): Snake =
+      Snake(0, 0, 0, 0, List.fill(knots)(Coord(0, 0)))
