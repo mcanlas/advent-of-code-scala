@@ -77,7 +77,7 @@ object Day08:
           val (minHeight, keeps) = acc
 
           if (e >= minHeight)
-            e         -> (keeps :+ e)
+            e -> (keeps :+ e)
           else
             minHeight -> keeps
         }
@@ -92,7 +92,7 @@ object Day08:
       apply(toQuery) match
         case Some(neighborHeight) =>
           accHeights(f, f(toQuery), acc :+ neighborHeight)
-        case None                 =>
+        case None =>
           acc
 
   object TreeGrid:

@@ -24,7 +24,7 @@ object Day02:
               6
             case n if n < 0 =>
               0
-            case _          =>
+            case _ =>
               3
 
         println(s"$me $them $fightScore")
