@@ -14,6 +14,8 @@ lazy val core =
   project
     .withCats
     .withFileIO
+    .withGitHubPackagesCredentials
+    .withResolver("rufio")
 
 lazy val `year-2020` =
   project
@@ -30,12 +32,3 @@ lazy val `year-2021-scala3` =
 lazy val `year-2022` =
   project
     .dependsOn(core)
-
-ThisBuild / credentials += Credentials(
-  "GitHub Package Registry",
-  "maven.pkg.github.com",
-  "mcanlas",
-  sys.env("GH_PACKAGES_TOKEN")
-)
-
-ThisBuild / resolvers += "mcanlas/rufio" at "https://maven.pkg.github.com/mcanlas/rufio/"
