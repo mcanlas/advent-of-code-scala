@@ -19,7 +19,7 @@ object Day11:
         if (s.startsWith("Monkey") || s == "")
           proto -> monkeys
         else if (proto.size == 4)
-          Nil          -> (monkeys :+ Monkey.parse(proto :+ s))
+          Nil -> (monkeys :+ Monkey.parse(proto :+ s))
         else
           (proto :+ s) -> monkeys
       }
@@ -99,10 +99,9 @@ object Day11:
                 .updated(throwTarget, targetMonkey.copy(items = targetMonkey.items :+ thrownItem))
             }
 
-        println {
+        println:
           monkeysAfterThrowing
             .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))
-        }
 
         monkeysAfterThrowing
           .updated(monkeyIndex, curMonkey.copy(items = Nil, inspectCount = curMonkey.inspectCount + items.size))

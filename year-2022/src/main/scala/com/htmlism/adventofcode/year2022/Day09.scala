@@ -178,7 +178,7 @@ object Day09:
           .find(_._1 == Coord(x, y)) match
           case Some((_, i)) =>
             print(i)
-          case None         =>
+          case None =>
             if (hist(Coord(x, y)))
               print("#")
             else

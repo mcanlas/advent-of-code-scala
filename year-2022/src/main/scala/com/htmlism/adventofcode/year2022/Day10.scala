@@ -17,7 +17,7 @@ object Day10:
           acc
 
         s match
-          case "noop"  =>
+          case "noop" =>
             cpu -> (xs :+ cpu)
           case Addx(n) =>
             val newCpu =
