@@ -170,20 +170,20 @@ object Day09:
     def printSnake(hist: Set[Coord]): Unit =
       for {
         y <- maxY to minY by -1
-      } yield
-        for {
-          x <- minX to maxX
-        } yield xs
-          .zipWithIndex
-          .find(_._1 == Coord(x, y)) match
-          case Some((_, i)) =>
-            print(i)
-          case None =>
-            if (hist(Coord(x, y)))
-              print("#")
-            else
-              print(".")
-        println
+      }
+      for {
+        x <- minX to maxX
+      } xs
+        .zipWithIndex
+        .find(_._1 == Coord(x, y)) match
+        case Some((_, i)) =>
+          print(i)
+        case None =>
+          if (hist(Coord(x, y)))
+            print("#")
+          else
+            print(".")
+      println
 
   object Snake:
     def apply(knots: Int): Snake =
