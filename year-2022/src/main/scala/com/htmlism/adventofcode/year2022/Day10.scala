@@ -1,13 +1,10 @@
 package com.htmlism.adventofcode.year2022
 
-import scala.annotation.tailrec
 import scala.util.chaining.*
 
 import cats.*
 import cats.data.*
 import cats.syntax.all.*
-
-import com.htmlism.adventofcode.core._
 
 object Day10:
   def apply(part: Part)(xs: List[String]): String =

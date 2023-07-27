@@ -1,7 +1,6 @@
 package com.htmlism.adventofcode.year2022
 
 import cats.*
-import cats.data.*
 import cats.syntax.all.*
 
 object Day02:

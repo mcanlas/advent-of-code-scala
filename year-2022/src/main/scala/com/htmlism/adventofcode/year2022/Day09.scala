@@ -1,11 +1,6 @@
 package com.htmlism.adventofcode.year2022
 
-import scala.annotation.tailrec
 import scala.util.chaining.*
-
-import cats.*
-import cats.data.*
-import cats.syntax.all.*
 
 import com.htmlism.adventofcode.core._
 
@@ -171,18 +166,18 @@ object Day09:
       for {
         y <- maxY to minY by -1
       }
-      for {
-        x <- minX to maxX
-      } xs
-        .zipWithIndex
-        .find(_._1 == Coord(x, y)) match
-        case Some((_, i)) =>
-          print(i)
-        case None =>
-          if (hist(Coord(x, y)))
-            print("#")
-          else
-            print(".")
+        for {
+          x <- minX to maxX
+        } xs
+          .zipWithIndex
+          .find(_._1 == Coord(x, y)) match
+          case Some((_, i)) =>
+            print(i)
+          case None =>
+            if (hist(Coord(x, y)))
+              print("#")
+            else
+              print(".")
       println
 
   object Snake:

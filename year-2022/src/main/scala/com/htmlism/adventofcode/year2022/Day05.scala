@@ -3,7 +3,6 @@ package com.htmlism.adventofcode.year2022
 import scala.util.chaining.*
 
 import cats.*
-import cats.data.*
 import cats.syntax.all.*
 
 object Day05:
