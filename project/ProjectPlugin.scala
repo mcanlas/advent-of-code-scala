@@ -20,7 +20,7 @@ object ProjectPlugin extends AutoPlugin {
 
     implicit class ProjectOps(p: Project) {
       def withCats: Project =
-        p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.9.0")
+        p.settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.10.0")
 
       def withFileIO: Project =
         p.settings(libraryDependencies += "com.htmlism" %% "rufio-zio" % "72-35c7b930")
