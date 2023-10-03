@@ -72,7 +72,7 @@ object Day05:
         .toList
 
     def push(i: Int, x: Char): Crates =
-      if (x == ' ') this
+      if x == ' ' then this
       else
         val oldStack =
           stacks(i)

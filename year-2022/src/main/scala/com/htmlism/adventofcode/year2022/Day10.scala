@@ -51,10 +51,8 @@ object Day10:
                     val drawPosition =
                       lookup.getUnsafe(stateIndex - 1).x
 
-                    if (drawPosition - 1 <= x - 1 && x - 1 <= drawPosition + 1)
-                      "#"
-                    else
-                      "."
+                    if drawPosition - 1 <= x - 1 && x - 1 <= drawPosition + 1 then "#"
+                    else "."
                   }
                   .mkString("")
               }

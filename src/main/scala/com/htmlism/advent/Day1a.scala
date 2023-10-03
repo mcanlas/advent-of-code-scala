@@ -36,8 +36,6 @@ object Day1a extends Solver:
             Some(x)
 
           case None =>
-            if (base + e == 2020)
-              Some(base * e)
-            else
-              None
+            if base + e == 2020 then Some(base * e)
+            else None
       }

@@ -1,6 +1,6 @@
 package com.htmlism.adventofcode.year2022
 
-import scala.util.chaining._
+import scala.util.chaining.*
 
 import cats.*
 import cats.syntax.all.*

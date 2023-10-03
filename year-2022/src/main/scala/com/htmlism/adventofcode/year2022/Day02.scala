@@ -89,27 +89,20 @@ object Day02:
       val yn =
         lookup(y)
 
-      if (xn == (xs.size - 1) && yn == 0)
-        -1
-      else if (xn == 0 && yn == (xs.size - 1))
-        1
-      else
-        Order[Int].compare(xn, yn)
+      if xn == (xs.size - 1) && yn == 0 then -1
+      else if xn == 0 && yn == (xs.size - 1) then 1
+      else Order[Int].compare(xn, yn)
 
     def getWinner(x: A): A =
       val xn =
         lookup(x)
 
-      if (xn == (xs.size - 1))
-        xs.head
-      else
-        xs(xn + 1)
+      if xn == (xs.size - 1) then xs.head
+      else xs(xn + 1)
 
     def getLoser(x: A): A =
       val xn =
         lookup(x)
 
-      if (xn == 0)
-        xs.last
-      else
-        xs(xn - 1)
+      if xn == 0 then xs.last
+      else xs(xn - 1)

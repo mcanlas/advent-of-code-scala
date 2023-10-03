@@ -1,7 +1,7 @@
 package com.htmlism.adventofcode
 package year2021.day02
 
-import scala.util.chaining._
+import scala.util.chaining.*
 
 import cats.data.NonEmptyList
 

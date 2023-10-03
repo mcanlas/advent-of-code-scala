@@ -2,7 +2,7 @@ package com.htmlism.adventofcode.year2022
 
 import scala.util.chaining.*
 
-import com.htmlism.adventofcode.core._
+import com.htmlism.adventofcode.core.*
 
 object Day09:
   def apply(part: Part)(xs: List[String]): String =
@@ -103,30 +103,24 @@ object Day09:
       head.dist(tail, _.y)
 
     Business("tail", tail).bmap { t =>
-      if (xDiff.abs > 1)
+      if xDiff.abs > 1 then
         val newX =
           t.x + xDiff / 2
 
         val newY =
-          if (yDiff > 0)
-            t.y + 1
-          else if (yDiff < 0)
-            t.y - 1
-          else
-            t.y
+          if yDiff > 0 then t.y + 1
+          else if yDiff < 0 then t.y - 1
+          else t.y
 
         "x" -> Coord(newX, newY)
-      else if (yDiff.abs > 1)
+      else if yDiff.abs > 1 then
         val newY =
           t.y + yDiff / 2
 
         val newX =
-          if (xDiff > 0)
-            t.x + 1
-          else if (xDiff < 0)
-            t.x - 1
-          else
-            t.x
+          if xDiff > 0 then t.x + 1
+          else if xDiff < 0 then t.x - 1
+          else t.x
 
         "y" -> Coord(newX, newY)
       else "none" -> t
@@ -174,10 +168,8 @@ object Day09:
           case Some((_, i)) =>
             print(i)
           case None =>
-            if (hist(Coord(x, y)))
-              print("#")
-            else
-              print(".")
+            if hist(Coord(x, y)) then print("#")
+            else print(".")
       println
 
   object Snake:

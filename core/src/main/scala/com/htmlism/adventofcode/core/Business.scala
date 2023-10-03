@@ -1,10 +1,10 @@
 package com.htmlism.adventofcode.core
 
-import cats._
-import cats.data._
-import cats.syntax.all._
+import cats.*
+import cats.data.*
+import cats.syntax.all.*
 
-import com.htmlism.adventofcode.core.syntax._
+import com.htmlism.adventofcode.core.syntax.*
 
 final case class Business[A](log: Chain[String], depth: Int, x: A):
   def bmap[B](f: A => (String, B)): Business[B] =

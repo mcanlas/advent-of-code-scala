@@ -2,7 +2,7 @@ package com.htmlism.adventofcode
 package year2021.day01
 
 import cats.data.NonEmptyList
-import cats.syntax.all._
+import cats.syntax.all.*
 
 object Problem1:
   def solve(xs: NonEmptyList[String]): String =

@@ -1,7 +1,7 @@
 package com.htmlism.adventofcode.core
 
-import cats._
-import cats.syntax.all._
+import cats.*
+import cats.syntax.all.*
 
 package object syntax:
   implicit class BusinessFoldableOps[F[_]: Foldable, A](fa: F[A]):

@@ -9,12 +9,9 @@ object Day11:
         val (proto, monkeys) =
           acc
 
-        if (s.startsWith("Monkey") || s == "")
-          proto -> monkeys
-        else if (proto.size == 4)
-          Nil -> (monkeys :+ Monkey.parse(proto :+ s))
-        else
-          (proto :+ s) -> monkeys
+        if s.startsWith("Monkey") || s == "" then proto -> monkeys
+        else if proto.size == 4 then Nil -> (monkeys :+ Monkey.parse(proto :+ s))
+        else (proto :+ s)                -> monkeys
       }
       ._2
       .pipe { state =>
@@ -80,10 +77,8 @@ object Day11:
           items
             .foldLeft(state) { (stateThrown, thrownItem) =>
               val throwTarget =
-                if (thrownItem % curMonkey.divisor == 0)
-                  curMonkey.trueTarget
-                else
-                  curMonkey.falseTarget
+                if thrownItem % curMonkey.divisor == 0 then curMonkey.trueTarget
+                else curMonkey.falseTarget
 
               val targetMonkey =
                 stateThrown(throwTarget)
@@ -181,11 +176,9 @@ object Day11:
     toPrimeFactorsRecur(n, 2, Nil)
 
   def toPrimeFactorsRecur(n: Int, divisor: Int, factors: List[Int]): List[Int] =
-    if (n == 1) factors
+    if n == 1 then factors
     else
       assert(divisor <= n)
 
-      if (n % divisor == 0)
-        toPrimeFactorsRecur(n / divisor, divisor, factors :+ divisor)
-      else
-        toPrimeFactorsRecur(n, divisor + 1, factors)
+      if n % divisor == 0 then toPrimeFactorsRecur(n / divisor, divisor, factors :+ divisor)
+      else toPrimeFactorsRecur(n, divisor + 1, factors)
