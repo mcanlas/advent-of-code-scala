@@ -30,10 +30,10 @@ object Runner extends ZIOAppDefault:
     )
 
   def run: ZIO[ZIOAppArgs, Throwable, Unit] =
-    for {
+    for
       args <- getArgs
 
       xs <- File(args(1)).getLines
 
       s <- Console.printLine(dispatch(args(0))(xs))
-    } yield s
+    yield s

@@ -78,9 +78,9 @@ object Demo extends App:
     }
     .printAndGet()
 
-  (for {
+  (for
     x <- Business("abc", 123)
 
     y <- Business("plus one", x + 1)
-  } yield y)
+  yield y)
     .printAndGet()

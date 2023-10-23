@@ -157,19 +157,18 @@ object Day09:
         .pipe(xs => Snake(newMinX, newMaxX, newMinY, newMaxY, xs))
 
     def printSnake(hist: Set[Coord]): Unit =
-      for {
-        y <- maxY to minY by -1
-      }
-        for {
-          x <- minX to maxX
-        } xs
-          .zipWithIndex
-          .find(_._1 == Coord(x, y)) match
-          case Some((_, i)) =>
-            print(i)
-          case None =>
-            if hist(Coord(x, y)) then print("#")
-            else print(".")
+      for y <- maxY to minY by -1
+      do
+        for x <- minX to maxX
+        do
+          xs
+            .zipWithIndex
+            .find(_._1 == Coord(x, y)) match
+            case Some((_, i)) =>
+              print(i)
+            case None =>
+              if hist(Coord(x, y)) then print("#")
+              else print(".")
       println
 
   object Snake:
