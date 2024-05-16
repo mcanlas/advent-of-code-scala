@@ -58,29 +58,33 @@ object Demo extends App:
       .pure(456)
       .bmap(n => "plus" -> (n + 1))
 
-  (a, b)
-    .tupled
-    .bmap(n => "hello" -> n)
-    .printAndGet()
+  val _ =
+    (a, b)
+      .tupled
+      .bmap(n => "hello" -> n)
+      .printAndGet()
 
-  List(1, 2, 3)
-    .traverse { n =>
-      Business("start", n)
-        .bmap(n => "plus one" -> (n + 1))
-        .bmap(n => "plus two" -> (n + 2))
-    }
-    .bmap(n => "summarize" -> n.sum)
-    .printAndGet()
+  val _ =
+    List(1, 2, 3)
+      .traverse { n =>
+        Business("start", n)
+          .bmap(n => "plus one" -> (n + 1))
+          .bmap(n => "plus two" -> (n + 2))
+      }
+      .bmap(n => "summarize" -> n.sum)
+      .printAndGet()
 
-  List(4, 5, 6)
-    .bfoldLeft(0) { (acc, e) =>
-      (s"$acc + $e", acc + e)
-    }
-    .printAndGet()
+  val _ =
+    List(4, 5, 6)
+      .bfoldLeft(0) { (acc, e) =>
+        (s"$acc + $e", acc + e)
+      }
+      .printAndGet()
 
-  (for
-    x <- Business("abc", 123)
+  val _ =
+    (for
+      x <- Business("abc", 123)
 
-    y <- Business("plus one", x + 1)
-  yield y)
-    .printAndGet()
+      y <- Business("plus one", x + 1)
+    yield y)
+      .printAndGet()
