@@ -1,7 +1,6 @@
 lazy val `advent-of-code-scala` =
   project
     .in(file("."))
-    .withCats
     .aggregate(
       core,
       `year-2020`,
