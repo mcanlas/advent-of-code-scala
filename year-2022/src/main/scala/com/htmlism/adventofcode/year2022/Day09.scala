@@ -143,11 +143,11 @@ object Day09:
         xs
           .updated(0, f(xs.head))
 
-      val newMinX = List(minX, newHead.x).min
-      val newMaxX = List(maxX, newHead.x).max
+      val newMinX = Math.min(minX, newHead.x)
+      val newMaxX = Math.max(maxX, newHead.x)
 
-      val newMinY = List(minY, newHead.y).min
-      val newMaxY = List(maxY, newHead.y).max
+      val newMinY = Math.min(minY, newHead.y)
+      val newMaxY = Math.max(maxY, newHead.y)
 
       (0 until xs.size - 1)
         .foldLeft(withNewHead) { (acc, i) =>
