@@ -74,7 +74,7 @@ object Day09:
   def assertNudge(head: Coord, tail: Coord, exp: Coord) =
     assert(
       nudgeT(head, tail) == exp,
-      "\nHead: " + head.toString + "\nTail: " + tail.toString + "\nGot: " + nudgeT(head, tail)
+      "\nHead: " + head.toString + "\nTail: " + tail.toString + "\nGot: " + nudgeT(head, tail).toString
     )
 
   assertNudge(Coord(0, 0), Coord(0, 0), Coord(0, 0))
