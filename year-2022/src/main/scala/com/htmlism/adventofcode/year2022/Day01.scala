@@ -12,7 +12,7 @@ object Day01:
         else NonEmptyList(cmd.toInt :: xs.head, xs.tail)
       )
       .map(_.sumAll)
-      .sorted(Order.reverse(Order[Int]))
+      .sorted(using Order.reverse(Order[Int]))
       .take(take)
       .sumAll
       .toString
