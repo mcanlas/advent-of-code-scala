@@ -47,7 +47,7 @@ object Business:
     def ap[A, B](ff: Business[A => B])(fa: Business[A]): Business[B] =
       Business(ff.log ++ fa.log, depth = 0, ff.x(fa.x))
 
-object Demo extends App:
+object Demo:
   val a =
     Applicative[Business]
       .pure(123)
@@ -58,33 +58,34 @@ object Demo extends App:
       .pure(456)
       .bmap(n => "plus" -> (n + 1))
 
-  val _ =
-    (a, b)
-      .tupled
-      .bmap(n => "hello" -> n)
-      .printAndGet()
+  def main(args: Array[String]): Unit =
+    val _ =
+      (a, b)
+        .tupled
+        .bmap(n => "hello" -> n)
+        .printAndGet()
 
-  val _ =
-    List(1, 2, 3)
-      .traverse { n =>
-        Business("start", n)
-          .bmap(n => "plus one" -> (n + 1))
-          .bmap(n => "plus two" -> (n + 2))
-      }
-      .bmap(n => "summarize" -> n.sum)
-      .printAndGet()
+    val _ =
+      List(1, 2, 3)
+        .traverse { n =>
+          Business("start", n)
+            .bmap(n => "plus one" -> (n + 1))
+            .bmap(n => "plus two" -> (n + 2))
+        }
+        .bmap(n => "summarize" -> n.sum)
+        .printAndGet()
 
-  val _ =
-    List(4, 5, 6)
-      .bfoldLeft(0) { (acc, e) =>
-        (s"$acc + $e", acc + e)
-      }
-      .printAndGet()
+    val _ =
+      List(4, 5, 6)
+        .bfoldLeft(0) { (acc, e) =>
+          (s"$acc + $e", acc + e)
+        }
+        .printAndGet()
 
-  val _ =
-    (for
-      x <- Business("abc", 123)
+    val _ =
+      (for
+        x <- Business("abc", 123)
 
-      y <- Business("plus one", x + 1)
-    yield y)
-      .printAndGet()
+        y <- Business("plus one", x + 1)
+      yield y)
+        .printAndGet()
