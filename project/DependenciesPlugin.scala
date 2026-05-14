@@ -8,11 +8,11 @@ object DependenciesPlugin extends AutoPlugin {
     implicit class DependencyOps(p: Project) {
       def withCats: Project =
         p
-          .settings(libraryDependencies += "org.typelevel" %% "cats-core" % "2.13.0")
+          .settings(libraryDependencies += "org.typelevel" %% "cats-core" % Versions.catsCore)
 
       def withFileIO: Project =
         p
-          .settings(libraryDependencies += "com.htmlism" %% "rufio-zio" % "72-35c7b930")
+          .settings(libraryDependencies += "com.htmlism" %% "rufio-zio" % Versions.rufioZio)
     }
   }
 }
