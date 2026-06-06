@@ -6,6 +6,7 @@ import cats.*
 import cats.syntax.all.*
 
 object Day03:
+  @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
   def apply(part: Part)(xs: List[String]): String =
     xs
       .pipe(toRucksacks(part))

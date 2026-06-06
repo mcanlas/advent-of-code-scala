@@ -103,6 +103,7 @@ object Day05:
           .updated(mv.dest, newDest)
       )
 
+    @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
     def summarize: String =
       stacks
         .map(_.last.toString)
@@ -112,6 +113,7 @@ object Day05:
     def build(width: Int): Crates =
       Crates(width, List.fill(width)(Nil))
 
+  @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
   private def toLoadedStacks(xs: List[String]) =
     val numStacks =
       xs.head.split("   ").size

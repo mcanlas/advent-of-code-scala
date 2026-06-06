@@ -5,6 +5,7 @@ import scala.util.chaining.*
 import com.htmlism.adventofcode.core.*
 
 object Day09:
+  @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
   def apply(part: Part)(xs: List[String]): String =
     val snakeLength =
       part match
@@ -29,7 +30,7 @@ object Day09:
         val (d, n) =
           dn
 
-        println
+        println()
         println(dn)
 
         val (history, snake) =
@@ -51,6 +52,7 @@ object Day09:
 //              newSnake.printSnake(Set.empty)
 //              println
 
+              @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
               val newHistory =
                 acc._1 + newSnake.xs.last
 
@@ -134,7 +136,9 @@ object Day09:
       "D" -> (c => c.copy(y = c.y - 1))
     )
 
+  @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
   case class Snake(minX: Int, maxX: Int, minY: Int, maxY: Int, xs: List[Coord]):
+    @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
     def nudge(f: Coord => Coord): Snake =
       val newHead =
         f(xs.head)
@@ -169,7 +173,7 @@ object Day09:
             case None =>
               if hist(Coord(x, y)) then print("#")
               else print(".")
-      println
+      println()
 
   object Snake:
     def apply(knots: Int): Snake =

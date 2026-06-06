@@ -4,6 +4,7 @@ package year2021.day03
 import cats.data.NonEmptyList
 
 object Problem1:
+  @SuppressWarnings(Array("org.wartremover.warts.Throw"))
   def solve(xs: NonEmptyList[String]): String =
     xs
       .map { binaryStr =>

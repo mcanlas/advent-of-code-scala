@@ -36,6 +36,7 @@ object Day07:
       .pipe(solve(part))
       .toString
 
+  @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
   private def solve(part: Part)(xs: List[(String, Int)]) =
     part match
       case Part.One =>

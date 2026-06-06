@@ -93,6 +93,7 @@ object Day02:
       else if xn == 0 && yn == (xs.size - 1) then 1
       else Order[Int].compare(xn, yn)
 
+    @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
     def getWinner(x: A): A =
       val xn =
         lookup(x)
@@ -100,6 +101,7 @@ object Day02:
       if xn == (xs.size - 1) then xs.head
       else xs(xn + 1)
 
+    @SuppressWarnings(Array("org.wartremover.warts.IterableOps"))
     def getLoser(x: A): A =
       val xn =
         lookup(x)
