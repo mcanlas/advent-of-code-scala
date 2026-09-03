@@ -100,6 +100,9 @@ object Day07:
         case Pat.File(s, f) =>
           ChildFile(s.toInt, f)
 
+        case _ =>
+          List
+
   sealed trait Node(val size: Int)
 
   enum TerminalOutput:

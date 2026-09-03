@@ -24,6 +24,9 @@ object Problem1:
 
           case "up" =>
             acc.copy(depth = acc.depth - e._2)
+
+          case _ =>
+            acc
       }
       .pipe(x => x.horizontal * x.depth)
       .toString
